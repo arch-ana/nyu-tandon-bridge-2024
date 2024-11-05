@@ -14,7 +14,7 @@ int main()
     cin>>userInput;
 
     //prints all numbers that are perfect numbers
-    cout<<"The following are perfect numbers between 2 and "<<userInput<<": "<<endl;
+    cout<<"Following are perfect numbers between 2 and "<<userInput<<": "<<endl;
     for (int i = 2; i <= userInput; i++)
     {
         if (isPerfect(i))
@@ -22,21 +22,32 @@ int main()
             cout<<i<<endl;
         }
     }
+    cout<<endl;
 
     //prints all amicable numbers
     //amicable numbers add up to each others perfect divisors
-    cout<<"The following are amicable pairs of numbers between 2 and "<<userInput<<": "<<endl;
-    for (int i = 1; i <= userInput; i++)
+    cout<<"Following are amicable numbers between 2 and "<<userInput<<endl;
+    for (int i = 2; i <= userInput; i++)
     {
-        int amicableNumber = 0, numberOfDivisors = 0, sumOfDivisors = 0;
+        int iNumberOfDivisors = 0, iSumOfDivisors = 0;
 
         if (isPerfect(i) == false)
         {
-            analyzeDividors(i, numberOfDivisors, sumOfDivisors);
+            analyzeDividors(i, iNumberOfDivisors, iSumOfDivisors);
+        }
+
+        int j = iSumOfDivisors;
+        int jNumberOfDivisors = 0, jSumOfDivisors = 0;
+        analyzeDividors(j, jNumberOfDivisors, jSumOfDivisors);
+
+        if (i<j && iSumOfDivisors == j && jSumOfDivisors == i)
+        { 
+            cout<<i<<" and "<<j<<endl;
         }
     }
 }
 
+//function that analyzes a given number, finds the sum of its proper roots and the number of its proper roots
 void analyzeDividors(int num, int& outCountDivs, int& outSumDivs)
 {
     for (int i = 2; i <= sqrt(num); i++)
@@ -59,6 +70,7 @@ void analyzeDividors(int num, int& outCountDivs, int& outSumDivs)
     outSumDivs += 1;
 }
 
+//function that checks if a number if a perfect number
 bool isPerfect(int num)
 {
     int outCountDivs = 0, outSumDivs = 0;
