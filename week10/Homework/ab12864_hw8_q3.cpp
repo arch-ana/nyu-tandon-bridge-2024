@@ -46,6 +46,7 @@ void removeOdd(int arr[], int& arrSize){
     for (int i = 0; i<arrSize; i++){
         if (arr[i]%2 == 0){
             arr[k] = arr[i];
+            k++;
         }
         else{
             counter++;
