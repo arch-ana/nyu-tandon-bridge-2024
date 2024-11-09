@@ -7,7 +7,7 @@ int const LENGTH_OF_ALL_USABLE_DIGITS = 10;
 
 void generateUniqueSequence(int arr[], int sizeArr);
 void findIndicesToCheck(int permissibleDigitsArray[], int constantPassword, int indicesToCheck[]);
-bool isPasswordMatch(int permissibleDigitsArray[], int userInputArray[], int indicesToCheck[]);
+bool isPasswordMatch(int uniqueSequence[], int userInputArray[], int indicesToCheck[]);
 
 int main(){
 
@@ -35,7 +35,7 @@ int main(){
     cout<<endl;
     cin>>userInput;
     
-    //converts userinput to an array with 5 elements
+    //converts userinput to an array with 5 elements - debugged
     while (userInput>0){
         currDigit = userInput % 10;
         for (int i = PASSWORD_LENGTH - 1; i >= 0; i--){
@@ -46,7 +46,7 @@ int main(){
     }
 
     findIndicesToCheck(allUsableDigits, PASSWORD, indicesToCheck);
-    if (isPasswordMatch(allUsableDigits, userEnteredSequence, indicesToCheck)){
+    if (isPasswordMatch(uniqueSequence, userEnteredSequence, indicesToCheck)){
         cout<<"The PIN is correct";
     }
     else{
@@ -66,25 +66,26 @@ void generateUniqueSequence(int arr[], int sizeArr){
 
 void findIndicesToCheck(int permissibleDigitsArray[], int constantPassword, int indicesToCheck[]){
     int currentDigit;
+    int k = PASSWORD_LENGTH - 1;
     while (constantPassword>0){
         currentDigit = constantPassword % 10;
         for (int i = 0; i < LENGTH_OF_ALL_USABLE_DIGITS; i++){
             if (permissibleDigitsArray[i] == currentDigit){
-                indicesToCheck[PASSWORD_LENGTH - (i+1)] = i;
+                indicesToCheck[k] = i;
             }
-        constantPassword /= 10;
         }
+        constantPassword /= 10;
+        k -= 1;
     }
 }
 
-bool isPasswordMatch(int permissibleDigitsArray[], int userInputArray[], int indicesToCheck[]){
+bool isPasswordMatch(int uniqueSequence[], int userInputArray[], int indicesToCheck[]){
 
     int passwordMatch = 1;
     
     for (int i = 0; i < PASSWORD_LENGTH; i++){
-        if (permissibleDigitsArray[indicesToCheck[i]] != userInputArray[i]){
+        if (uniqueSequence[indicesToCheck[i]] != userInputArray[i]){
             passwordMatch = 0;
-            break;
         }
     }
 
