@@ -55,6 +55,8 @@ int main(){
 
 }
 
+//function takes an array and its length and modifies the array to contain
+//random values between 1 3 and 3. 
 void generateUniqueSequence(int arr[], int sizeArr){
 
     int permissibleValues[3] = {1,2,3};
@@ -64,6 +66,9 @@ void generateUniqueSequence(int arr[], int sizeArr){
     }
 }
 
+//this function takes three arguments: 1) an array containing all permissible characters in the password
+//2) the actual password of the user and 3) an empty array to hold the indices that need to be checked
+//to authenticate the person's password against the randomized array
 void findIndicesToCheck(int permissibleDigitsArray[], int constantPassword, int indicesToCheck[]){
     int currentDigit;
     int k = PASSWORD_LENGTH - 1;
@@ -79,6 +84,7 @@ void findIndicesToCheck(int permissibleDigitsArray[], int constantPassword, int 
     }
 }
 
+//function checks if the person's response matches with their actual password 
 bool isPasswordMatch(int uniqueSequence[], int userInputArray[], int indicesToCheck[]){
 
     int passwordMatch = 1;
