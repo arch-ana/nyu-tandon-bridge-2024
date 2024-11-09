@@ -1,4 +1,5 @@
 #include<iostream>
+#include <time.h>
 using namespace std;
 
 int const PASSWORD = 74619;
@@ -11,6 +12,8 @@ bool isPasswordMatch(int uniqueSequence[], int userInputArray[], int indicesToCh
 
 int main(){
 
+    srand(time(0));
+    
     int allUsableDigits[LENGTH_OF_ALL_USABLE_DIGITS] = {0,1,2,3,4,5,6,7,8,9};
     int uniqueSequence[LENGTH_OF_ALL_USABLE_DIGITS];
     int userInput, currDigit;
@@ -35,7 +38,7 @@ int main(){
     cout<<endl;
     cin>>userInput;
     
-    //converts userinput to an array with 5 elements - debugged
+    //converts userinput to an array with 5 elements
     while (userInput>0){
         currDigit = userInput % 10;
         for (int i = PASSWORD_LENGTH - 1; i >= 0; i--){
