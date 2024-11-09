@@ -40,23 +40,16 @@ void reverseArray(int arr[], int arrSize){
 }
 
 void removeOdd(int arr[], int& arrSize){
+    int k = 0;
+    int counter = 0;
     
-    int i = 0;
-    int j = arrSize-1;
-    int temp;
-    int counter;
-
-    while (i<j){
-        while(i<j && arr[i]%2 == 0){
-            i++;
+    for (int i = 0; i<arrSize; i++){
+        if (arr[i]%2 == 0){
+            arr[k] = arr[i];
         }
-        while(i<j && arr[j]%2 != 0){
-            j--;
+        else{
+            counter++;
         }
-        temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-        counter ++;
     }
     arrSize -= counter;
 }
