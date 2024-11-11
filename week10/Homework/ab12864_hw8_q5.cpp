@@ -16,6 +16,5 @@ int main(){
         cout<<"User, "<<firstName<<" "<<middleName[0]<<". ";
     }
     
-
     return 0;
 }
