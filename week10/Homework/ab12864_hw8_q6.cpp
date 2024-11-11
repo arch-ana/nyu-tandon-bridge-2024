@@ -2,7 +2,8 @@
 #include <string>
 using namespace std;
 
-int IndexOfSpaces(string str, int arr[]);
+int startAndEndOfWords(string str, int arr[]);
+string convertToX(string str, int startAndEndToCheck[], int lenOfIndiceArr);
 int main(){
 
     string str;
@@ -10,38 +11,65 @@ int main(){
     cout<<"Please enter a line of text: ";
     getline(cin, str);
 
-    int indicesOfSpaces[str.length()], lastIndiceInSpacesArray;
+    int arrStartAndEndOfWords[str.length()];
     
-    lastIndiceInSpacesArray = IndexOfSpaces(str, indicesOfSpaces);
-    cout<<"Value of k = "<<lastIndiceInSpacesArray<<endl;
+    int lenIndices = startAndEndOfWords(str, arrStartAndEndOfWords);
 
-    for (int i = 0; i <= lastIndiceInSpacesArray; i++){
-        cout<<indicesOfSpaces[i]<<" ";
+    for (int i = 0; i < lenIndices; i++){
+        cout<<arrStartAndEndOfWords[i]<<" ";
     }
+    cout<<endl;
+    cout<<"length: "<<lenIndices;
+    cout<<endl;
 
-    cout<<"Length of string: "<<str.length();
+    string sentence = convertToX(str, arrStartAndEndOfWords, lenIndices);
+    
+    cout<<sentence<<endl;
 
     return 0;
 }
 
-//find indices of all spaces
-int IndexOfSpaces(string str, int arr[]){
+//find indices beginning and ending of each word
+int startAndEndOfWords(string str, int arr[]){
 
-    int k = 0;
+    arr[0] = 0;
+    int k = 1;
     
     for (int i = 0; i<str.length(); i++){
         if (str[i] == ' '){
-            arr[k] = i;
+            arr[k] = i-1;
+            k++;
+            arr[k] = i+1;
             k++;
         }
     }
-
-    return k-1;
+    
+    arr[k] = str.length() - 1;
+    return k+1;
 }
 
-
-//for every two consecutive index values stored in array, check if the corresponding value
-//in the string has all integer values. if yes, store these indices in an array. 
-
-
+//for every pair of entries in the array, check if the word within the
+//pair is entirely numeric
+string convertToX(string str, int startAndEndToCheck[], int lenOfIndiceArr){
+    
+    for (int i = 0; i<lenOfIndiceArr; i++){
+        if (i%2 == 0){
+            
+            bool isInteger = true;
+            
+            for (int j = startAndEndToCheck[i]; j <= startAndEndToCheck[i+1]; j++){
+                if (int(str[j]) > 57 || int(str[j]) < 48){
+                    isInteger = false;
+                }
+            }
+            if (isInteger){
+                for (int j = startAndEndToCheck[i]; j <= startAndEndToCheck[i+1]; j++){
+                    str[j] = 'x';
+                }
+            }
+        }
+    }
+    
+    return str;
+}
 
