@@ -51,8 +51,12 @@ int numberOfWords(string str){
 
 void numberOfLetters(string str, int arrOccurences[]){
     for (int i = 0 ; i < str.length(); i++){
-        if (int(tolower(str[i])) >= 97 || int(tolower(str[i])) <= 122){
-            int k = int(tolower(str[i])) - 97;
+        if (int(str[i]) >= 97 && int(str[i]) <= 122){
+            int k = int(str[i]) - 97;
+            arrOccurences[k] += 1;
+        }
+        else if (int(str[i]) >= 65 && int(str[i]) <= 90){
+            int k = int(str[i]) - 65;
             arrOccurences[k] += 1;
         }
     }
