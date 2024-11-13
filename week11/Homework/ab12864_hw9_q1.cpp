@@ -14,13 +14,13 @@ int main(){
 
     int words = numberOfWords(str);
 
-    cout<<"Number of words is:\t"<<words<<endl;
+    cout<<words<<"\twords"<<endl;
 
-    arrOccurrences = numberOfLetters(str, arrOccurrences);
+    numberOfLetters(str, arrOccurrences);
 
     for (int i = 0; i<26; i++){
         if (arrOccurrences[i] != 0){
-            cout<<char(i+97)<<"\t"<<arrOccurrences[i]<<endl;
+            cout<<arrOccurrences[i]<<"\t"<<char(i+97)<<endl;
         }
     }
 
@@ -46,7 +46,6 @@ int numberOfWords(string str){
             end = -1;
         }
     }
-
     return counter;
 }
 
