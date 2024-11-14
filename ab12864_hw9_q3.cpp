@@ -25,14 +25,9 @@ int main(){
 
     return 0;
 }
-//input
-// 1)pointer to an array
-// 2)size of the array
-// 3)reference to a variable that holds the size of array 
-//  with positive elements
-
-// output: returns the base address of the array containing the positive numbers
-//and updates the output parameter outPosArrSize with the array's logical size
+//input 1)pointer to an array 2)size of the array 3)reference to a variable that holds the size of the new array with positive elements
+//output: 1) returns the base address of the new array containing positive elements from the original array 2) updates the output parameter 
+//outPosArrSize with the array's size
 int* getPosNums1(int* arr, int arrSize, int& outPosArrSize){
     int k = 0;    
     for (int i = 0; i<arrSize; i++){
@@ -53,4 +48,10 @@ int* getPosNums1(int* arr, int arrSize, int& outPosArrSize){
         *(ptrPosArr+i) = *(arr+i);
     }
     return ptrPosArr;
+}
+
+
+
+int* getPosNums2(int* arr, int arrSize, int* outPosArrSizePtr){
+
 }
