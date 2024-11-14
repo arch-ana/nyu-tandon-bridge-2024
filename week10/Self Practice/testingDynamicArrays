@@ -1,0 +1,17 @@
+#include <iostream>
+using namespace std;
+
+int main(){
+
+    int n;
+
+    cout<<"Enter #: ";
+    cin>>n;
+
+    int arr[n];
+
+    for (int j = 0; j < n; j++){
+        arr[j] = j*j;
+        cout<<arr[j];
+    }
+}
