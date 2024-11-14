@@ -53,14 +53,14 @@ int main(){
     cout<<endl;
 
     cout<<"USING FUNC3"<<endl;
-    *posArrSizePtr = 0;
+    int posArrSize = 0;
     int* posArrPtr = new int[*posArrSizePtr];
     cout<<"Base address of original array "<<arrPtr<<endl;
-    getPosNums3(arrPtr, arrSize1, posArrPtr, *posArrSizePtr);
+    getPosNums3(arrPtr, arrSize1, posArrPtr, posArrSize);
     cout<<"Base address of positive array: "<<posArrPtr<<endl;
     cout<<"Array with positive elements: ";
     for (int i = 0; i < (*posArrSizePtr); i++){
-        cout<<*(posArrPtr)<<" ";
+        cout<<*(posArrPtr+i)<<" ";
     }
     cout<<endl;
     cout<<"Size of positive array: "<<(*posArrSizePtr)<<endl;
@@ -134,17 +134,19 @@ void getPosNums3(int* arr, int arrSize, int*& outPosArr, int& outPosArrSize){
         if (*(arr+i) > 0){
             cout<<"in if: "<<endl;
             cout<<"*(arr+i) is: "<<*(arr+i)<<endl;
-            (*outPosArr)++;
+            (outPosArrSize)++;
         }
         else{
             cout<<"in else: "<<endl;
             cout<<"*(arr+i) is: "<<*(arr+i)<<endl;
         }
     }
-    int* posArrPtr = new int[*outPosArr];
+    int* posArrPtr = new int[outPosArrSize];
     for (int i = 0; i<arrSize; i++){
         if (*(arr+i) > 0){
             *(posArrPtr+k) = *(arr+i);
+            cout<<"test"<<endl;
+            cout<<*(posArrPtr+k);
             k++;
         }
     }
