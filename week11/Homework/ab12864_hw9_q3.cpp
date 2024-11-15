@@ -32,6 +32,8 @@ int main(){
         }
     cout<<endl;
 
+    //----------------------------------------
+
     cout<<"USING FUNC2"<<endl;
     *posArrSizePtr = 0;
     cout<<"Base address of original array "<<baseArrPtr<<endl;
@@ -51,6 +53,8 @@ int main(){
         cout<<baseArr[i]<<" ";
         }
     cout<<endl;
+
+    //----------------------------------------
 
     cout<<"USING FUNC3"<<endl;
     int posArrSize = 0;
@@ -73,11 +77,35 @@ int main(){
         }
     cout<<endl;
 
+    //----------------------------------------
+
+    cout<<"USING FUNC4"<<endl;
+    int* posArrSizePtr4;
+    *posArrSizePtr4 = 0;
+    //int* posArrPtr4 = new int[*posArrSizePtr4];
+    int* posArrPtr4;
+    cout<<"Base address of original array "<<baseArrPtr<<endl;
+    getPosNums4(baseArrPtr, baseArrSize, &posArrPtr4, posArrSizePtr4);
+    cout<<"Base address of positive array: "<<posArrPtr4<<endl;
+    cout<<"Array with positive elements: ";
+    for (int i = 0; i < (*posArrSizePtr4); i++){
+        //cout<<i<<endl;
+        cout<<*(posArrPtr4+i)<<" ";
+    }
+    cout<<endl;
+    cout<<"Size of positive array: "<<(*posArrSizePtr4)<<endl;
+    delete [] posArrPtr4;
+    posArrPtr4 = nullptr;
+
+    cout<<"Original array after func3 is: ";
+    for (int i = 0; i<baseArrSize; i++){
+        cout<<baseArr[i]<<" ";
+        }
+    cout<<endl;
+
     return 0;
 }
-//input 1)pointer to an array 2)size of the array 3)reference to a variable that holds the size of the new array with positive elements
-//output 1) returns the base address of the new array containing positive integers 2) updates the output parameter 
-//outPosArrSize with the array's size
+
 int* getPosNums1(int* arr, int arrSize, int& outPosArrSize){
     int k = 0;    
     for (int i = 0; i<arrSize; i++){
@@ -101,8 +129,6 @@ int* getPosNums1(int* arr, int arrSize, int& outPosArrSize){
     return posArrPtr;
 }
 
-//input 1) pointer to base of address of an array 2) size of the array 3) pointer to an integer variable
-//output 1) returns the base address of the new array containing positive integers 2) uses pointer outPosArrSizePtr to update array's logical size
 int* getPosNums2(int* arr, int arrSize, int* outPosArrSizePtr){
     int k = 0;    
     for (int i = 0; i<arrSize; i++){
@@ -126,11 +152,6 @@ int* getPosNums2(int* arr, int arrSize, int* outPosArrSizePtr){
     return posArrPtr;
 }
 
-//input 1) pointer to base of address of an array 2) size of the array 3) reference to a pointer that points to the base 
-//address of the array containing positive numbers 4) reference to a an integer which will be updated to reflect size of positive
-//integer array
-//output 1) updates outPosArr with the base address of the array containing positive numbers 2) updates outPosArrSize with the array's 
-//logical size
 void getPosNums3(int* arr, int arrSize, int*& outPosArr, int& outPosArrSize){
     int k = 0;    
     for (int i = 0; i<arrSize; i++){
@@ -153,13 +174,32 @@ void getPosNums3(int* arr, int arrSize, int*& outPosArr, int& outPosArrSize){
             k++;
         }
     }
-    //outPosArrSize = k;
 }
 
-//input 1) pointer to base of address of an array 2) size of the array 3) pointer to the pointer of the positive numbers array 
-//4) reference to a an integer which will be updated to reflect size of positive
-//output 1) updates outPosArr with the base address of the array containing positive numbers 2) updates outPosArrSize with the array's 
-//logical size
 void getPosNums4(int* arr, int arrSize, int** outPosArrPtr, int* outPosArrSizePtr){
+    int k = 0;    
+    for (int i = 0; i<arrSize; i++){
+        if (*(arr+i) > 0){
+            cout<<"in if: "<<endl;
+            cout<<"*(arr+i) is: "<<*(arr+i)<<endl;
+            (*outPosArrSizePtr)++;
+        }
+        else{
+            cout<<"in else: "<<endl;
+            cout<<"*(arr+i) is: "<<*(arr+i)<<endl;
+        }
+    }
+    cout<<"check outposarrsizeptr: "<<*outPosArrSizePtr<<endl;
 
+    int* temp = new int[(*outPosArrSizePtr)];
+    for (int i = 0; i<arrSize; i++){
+        if (*(arr+i) > 0){
+            *(temp+k) = *(arr+i);
+            cout<<"test "<<endl;
+            cout<<*(temp+k)<<endl;
+            k++;
+        }
+    }
+    cout<<temp<<endl;
+    *outPosArrPtr = temp;
 }
