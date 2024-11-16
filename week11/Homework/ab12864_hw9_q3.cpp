@@ -7,7 +7,7 @@ void getPosNums3(int* arr, int arrSize, int*& outPosArr, int& outPosArrSize);
 void getPosNums4(int* arr, int arrSize, int** outPosArrPtr, int* outPosArrSizePtr);
 int main(){
 
-    //arrays
+    //base array
     int baseArr[6] = {3,-1,-3,0,6,4};
 
     //integers
@@ -50,7 +50,6 @@ int main(){
 
     //main testing func3
     cout<<"Using getPosNums3"<<endl;
-    posArrPtr = new int[posArrSize];
     getPosNums3(baseArrPtr, baseArrSize, posArrPtr, posArrSize);
     cout<<"Base address of positive array: "<<posArrPtr<<endl;
     cout<<"Array with positive elements: ";
@@ -126,6 +125,10 @@ void getPosNums3(int* arr, int arrSize, int*& outPosArr, int& outPosArrSize){
         if (*(arr+i) > 0){
             outPosArrSize++;
         }
+    }
+    if (outPosArr != nullptr) {
+        delete[] outPosArr;
+        outPosArr = nullptr;
     }
     outPosArr = new int[outPosArrSize];
     for (int i = 0; i<arrSize; i++){
