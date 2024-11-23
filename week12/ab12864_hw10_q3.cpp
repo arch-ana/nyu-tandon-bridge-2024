@@ -2,26 +2,39 @@
 #include <vector>
 using namespace std;
 
-int* main1(int* arr, int arrSize, int n, int& lines);
-
-vector<int> main2(int* arr, int arrSize, int n);
+void main1();
+void main2();
+void resizeArray(int*& arr, int &currArrSize, int newArrSize);
+int* findNumDynArray(int* arr, int arrSize, int& resultArrSize, int n);
+vector<int> findNumVector(vector<int> userVector, int n);
 
 int main(){
 
-    int seqSize = 0, curr, index = 0, searchNum, linesArrSize = 0;
-    int* userSeq = new int[seqSize];
-    int* linesArr;
+    cout<<"Version 1\n";
+    main1();
+    cout<<"Version 2\n";
+    main2();
+
+    return 0;
+}
+
+//main 1
+void main1(){
+
+    int currInputSize = 10, currInput, linesArrSize = 0, index=0, searchNum;
+    int* userArr = new int [currInputSize];
 
     cout<<"Please enter a seq of positive integers, each in a separate line.";
     cout<<"End your input by typing -1."<<endl;
-    bool reachEnd = false;
 
+    bool reachEnd = false;
     while (reachEnd == false){
-        cin>>curr;
-        if (curr != -1){
-            seqSize += 1;
-            userSeq[index] = curr;
-            index++;
+        cin>>currInput;
+        if (currInput != -1){
+            userArr[index++] = currInput;
+            if (index == currInputSize){
+                resizeArray(userArr, currInputSize, currInputSize*2);
+            }
         }
         else{
             reachEnd = true;
@@ -31,7 +44,7 @@ int main(){
     cout<<"Please enter a number you wish to search: ";
     cin>>searchNum;
 
-    linesArr = main1(userSeq, seqSize, searchNum, linesArrSize);
+    int* linesArr = findNumDynArray(userArr, index, linesArrSize, searchNum);
     cout<<"Without using vectors, "<<searchNum<<" shows in lines ";
     for (int i = 0; i < linesArrSize; i++){
         if(i < linesArrSize - 1){
@@ -42,11 +55,38 @@ int main(){
         }
     }
     cout<<endl;
+    
     delete [] linesArr;
     linesArr = nullptr;
+    delete [] userArr;
+    userArr = nullptr;
+}
 
+//main2
+void main2(){
 
-    vector <int> linesVector = main2(userSeq, seqSize, searchNum);
+    int currInput, searchNum;
+    vector <int> userVector;
+    vector <int> linesVector;
+
+    cout<<"Please enter a seq of positive integers, each in a separate line.";
+    cout<<"End your input by typing -1."<<endl;
+
+    bool reachEnd = false;
+    while (reachEnd == false){
+        cin>>currInput;
+        if (currInput != -1){
+            userVector.push_back(currInput);
+        }
+        else{
+            reachEnd = true;
+        }
+    }
+
+    cout<<"Please enter a number you wish to search: ";
+    cin>>searchNum;
+
+    linesVector = findNumVector(userVector, searchNum);
     cout<<"Using vectors, "<<searchNum<<" shows in lines ";
     for (unsigned int i = 0; i < linesVector.size(); i++){
         if(i < linesVector.size() - 1){
@@ -56,37 +96,44 @@ int main(){
             cout<<linesVector[i];
         }
     }
-
-    delete [] userSeq;
-    userSeq = nullptr;
-
-    return 0;
 }
 
-int* main1(int* arr, int arrSize, int n, int& lines){
+//functions
+int* findNumDynArray(int* arr, int actualArrSize, int& resultArrSize, int n){
 
-    int* arrLines = new int[arrSize];
     int index = 0;
+    int* resultArr = new int[actualArrSize];
 
-    for (int i = 0; i < arrSize; i++){
+    for (int i = 0; i < actualArrSize; i++){
         if(arr[i] == n){
-            arrLines[index] = i+1;
-            index += 1;
-            lines += 1;
+            resultArr[index++] = i+1;
+            resultArrSize += 1;
         }
     }
 
-    return arrLines;
+    return resultArr;
 }
 
-vector<int> main2(int* arr, int arrSize, int n){
+vector<int> findNumVector(const vector<int> userVector, int n){
 
-    vector<int> arrLines;
+    vector<int> foundLines;
 
-    for (unsigned int i = 0; i < arrSize; i++){
-        if(arr[i] == n){
-            arrLines.push_back(i+1);
+    for (unsigned int i = 0; i < userVector.size(); i++){
+        if(userVector[i] == n){
+            foundLines.push_back(i+1);
         }
     }
-    return arrLines;
+    return foundLines;
+}
+
+void resizeArray(int*& arr, int &currArrSize, int newArrSize){
+    int* temp = new int[newArrSize];
+
+    for (int i = 0; i < currArrSize; i++){
+        temp[i] = arr[i];
+    }
+
+    delete [] arr;
+    arr = temp;
+    currArrSize = newArrSize;
 }

@@ -1,60 +1,56 @@
 #include <iostream>
 using namespace std;
 
+const int ARRAY_SIZE = 6;
+
 int* findMissing(int arr[], int n, int& resArrSize);
 
 int main(){
 
-    int resArrSize = 0, userArrSize, currInput;
+    int resArrSize;
     int* resArr;
 
-    cout<<"Enter the size of the array: ";
-    cin>>userArrSize;
+    int arr[ARRAY_SIZE] = {3, 1, 3, 0, 6, 4};
 
-    int userArr[userArrSize];
-
-    cout<<"Enter elements in array: ";
-    for (int i = 0; i < userArrSize; i++){
-        cin>>currInput;
-        userArr[i] = currInput;
-    }
-
-    resArr = findMissing(userArr, userArrSize, resArrSize);
-    cout<<"Array of missing elements between 0 and "<<userArrSize<<" is: ";
+    resArr = findMissing(arr, ARRAY_SIZE, resArrSize);
+    cout<<"Missing elements array: ";
     for (int i = 0; i < resArrSize; i++){
         cout<<resArr[i]<<" ";
     }
     cout<<endl;
-    cout<<"The size of the array of missing elements is: "<<resArrSize<<endl;
+    cout<<"Size of missing elements array: "<<resArrSize<<endl;
 
     delete [] resArr;
     resArr = nullptr;
 
     return 0;
-
 }
 
 int* findMissing(int arr[], int n, int& resArrSize){
     
-    int existArray[n+1], temp = 0, index=0;
-    
-    for (int i = 0; i < n+1; i++){
-        existArray[i] = 0;
-    }
+    int* existArray = new int [n+1]();
+    int index=0;
+    resArrSize = 0;
     
     for (int i = 0; i < n; i++){
-        temp = arr[i];
-        existArray[temp] += 1;
+        existArray[arr[i]] += 1;
     }
-
-    int *resArr = new int[n+1];
 
     for (int i = 0; i < n+1; i++){
-        if (existArray[i] <= 0){
-            resArr[index] = i;
+        if (existArray[i] == 0){
             resArrSize += 1;
-            index++;
         }
     }
+
+    int *resArr = new int[resArrSize];
+    for (int i = 0; i <= n; i++) {
+        if (existArray[i] == 0) {
+            resArr[index++] = i;
+        }
+    }
+    
+    delete [] existArray;
+    existArray = nullptr;
+
     return resArr;
 }

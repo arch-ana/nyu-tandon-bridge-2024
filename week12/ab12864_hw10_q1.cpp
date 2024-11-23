@@ -11,6 +11,7 @@ int main(){
 
     cout<<"Please enter a sentence: ";
     getline(cin, sentence);
+    cout<<endl;
 
     wordsInSentence =  createWordsArray(sentence, outWordsArrSize);
 
@@ -40,19 +41,16 @@ string* createWordsArray(string sentence, int& outWordsArrSize){
 
     for (int i = 0; i < sentence.length(); i++){
         if ((int(sentence[i]) >= 97 && int(sentence[i]) <= 122) || (int(sentence[i]) >= 65 && int(sentence[i]) <= 90)){
-            if (sentence[i-1] == ' ' || i == 0){
+            if (i == 0 || sentence[i-1] == ' ' ){
                 start = i;
-                //cout<<"start is "<<start<<endl;
             }
-            if (sentence[i+1] == ' ' || i == sentence.length()-1){
+            if (i == sentence.length()-1 || sentence[i+1] == ' ' ){
                 end = i;
-                //cout<<"end is "<<end<<endl;
             }
         }
         if (start != -1 && end != -1){
             outWordsArrSize += 1;
             stringArray[index] = sentence.substr(start, end - start +1);
-            //cout<<"word "<<index<<" is "<<stringArray[index]<<endl;
             index+=1;
             start = -1;
             end = -1;
