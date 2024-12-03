@@ -7,33 +7,42 @@ void printTriangle(int n);
 void printOppositeTriangles(int n);
 void printRuler(int n);
 int main(){
+    
+    int n;
+    
+    cout<<"Enter integer n: ";
+    cin>>n;
 
-    printTriangle(4);
+    cout<<"Triangle"<<endl;
+    printTriangle(n);
     cout<<endl;
+    cout<<"Opposite triangles"<<endl;
+    printOppositeTriangles(n);
     cout<<endl;
-    printOppositeTriangles(4);
-    //printRuler(4);
+    cout<<"Ruler"<<endl;
+    printRuler(n);
+    cout<<endl;
 
     return 0;
 }
 //function 1
 void printTriangle(int n){
     if (n==1){
-        cout<<ASTERISK;
+        cout<<ASTERISK<<endl;
     }
     else{
         printTriangle(n-1);
-        cout<<endl;
         for (int i = 1; i<= n; i++){
             cout<<ASTERISK;
         }
+        cout<<endl;
     }
 }
 
 //function 2
 void printOppositeTriangles(int n){
     if (n==1){
-        cout<<ASTERISK<<endl;
+        cout<<ASTERISK<<endl<<ASTERISK<<endl;
     }
     else{
         for (int i = 1; i <= n; i++){
