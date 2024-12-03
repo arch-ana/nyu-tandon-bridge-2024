@@ -13,15 +13,19 @@ int main(){
     for (int i = 0; i< ARRAY_SIZE; i++){
         cout<<newArray[i]<<" ";
     }
+    cout<<endl;
 
-    int min = minInArray1(newArray, ARRAY_SIZE);
-    cout<<"Minimum by method 1 is: "<<min<<endl;
+    int min1 = minInArray1(newArray, ARRAY_SIZE);
+    cout<<"Minimum by method 1 is: "<<min1<<endl;
 
     int high = rand()%ARRAY_SIZE;
     int low = rand()%ARRAY_SIZE;
-    cout<<"High is: "<<high<<" and low is "<<low<<endl;
-    int min = minInArray2(newArray, low, high);
-    cout<<"Minimum by method 1 is: "<<min<<endl;
+    while (low>high){
+        low = rand()%ARRAY_SIZE;
+    }
+    cout<<"Low is "<<low<<" and high is "<<high<<endl;
+    int min2 = minInArray2(newArray, low, high);
+    cout<<"Minimum by method 2 is: "<<min2<<endl;
 
     delete [] newArray;
     return 0;
@@ -33,12 +37,12 @@ int minInArray1(int arr[], int arrSize){
         return arr[0];
     }
     else{
-        minInArray1(arr, arrSize-2);
-        if (arr[arrSize-1]<arr[arrSize-2]){
+        minInArray1(arr, arrSize-1);
+        if (arr[arrSize-1]<minInArray1(arr, arrSize-1)){
             return arr[arrSize-1];
         }
         else{
-            return arr[arrSize-2];
+            return minInArray1(arr, arrSize-1);
         }
 
     }
@@ -47,6 +51,7 @@ int minInArray1(int arr[], int arrSize){
 //func2
 int minInArray2(int arr[], int low, int high){
     if (low == high){
+        //cout<<arr[low]<<endl;
         return arr[low];
     }
     else{
