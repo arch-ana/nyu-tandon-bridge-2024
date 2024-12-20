@@ -23,6 +23,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cctype>
+#include <string>
 using namespace std;
 
 //Money class declarations
@@ -70,7 +71,6 @@ private:
     long all_cents;
 };
 
-
 //Check class declarations
 class Check{
     public:
@@ -114,6 +114,7 @@ class Check{
 
 //Other function declarations
 int digit_to_int(char c);
+void sort(Check userChecks[], int numOfChecks);
 
 int main( ){
 
@@ -125,11 +126,14 @@ int main( ){
     
     Check* userChecks = new Check[numOfChecks];
 
-    cout<<"For each check, enter the checkNumber (non-negative int) space checkAmount (non-negative double) space checkCashStatus (y or n)";
+    cout<<"For each check, enter the checkNumber (positive int) space checkAmount (non-negative double) space checkCashStatus (y or n): ";
     for (int i = 0; i < numOfChecks; i++){
         cin>>userChecks[i];
         if (userChecks[i].getIsCashed()){
-            sumCashedChecks = sumCashedChecks + userChecks;
+            sumCashedChecks = sumCashedChecks + userChecks[i].getAmount();
+        }
+        else{
+            sumUncashedChecks = sumUncashedChecks + userChecks[i].getAmount();
         }
     }
 
@@ -147,7 +151,17 @@ int main( ){
     cout<<"Please enter your old balance in the form $ab.cd: ";
     cin>>oldBalance;
 
+    newBalance = oldBalance + sumUserDeposits - sumCashedChecks;
 
+    cout<<"Total checks cashed is: "<<sumCashedChecks<<endl;
+    cout<<"Total deposits is: "<<sumUserDeposits<<endl;
+    cout<<"New balance is: "<<newBalance<<endl;
+    cout<<"After accounting for uncashed checks, the balance will be: "<<newBalance-sumUncashedChecks<<endl;
+    cout<<"The difference is: "<<sumUncashedChecks<<endl;
+
+    for (int i = 0; i <numOfChecks; i++){
+        cout<<userChecks[i];
+    }
 
     delete [] userChecks;
     delete [] userDeposits;
@@ -274,12 +288,12 @@ bool Check::getIsCashed() const{
 
 istream& operator >>(istream& ins, Check& currCheck){
     int checkNumber;
-    double checkAmount;
-    char checkCashed;
+    Money checkAmount;
+    string checkCashed;
 
     ins>>checkNumber>>checkAmount>>checkCashed;
 
-    if ( checkNumber < 0 || checkAmount < 0.0 || checkCashed != 'y' || checkCashed != 'n'){
+    if (checkNumber < 1 || checkAmount < 0.0 || (checkCashed != "y" && checkCashed != "n")){
         cout << "Error illegal form for check input\n";
         exit(1);
     }
@@ -287,7 +301,7 @@ istream& operator >>(istream& ins, Check& currCheck){
     currCheck.checkNumber = checkNumber;
     currCheck.checkAmount = checkAmount;
     
-    if (checkCashed == 'y'){
+    if (checkCashed == "y"){
         currCheck.checkIsCashed = true;
     }
     else{
@@ -314,10 +328,10 @@ bool operator >(const Check& checkLeft, const Check& checkRight){
     return (checkLeft.checkNumber < checkRight.checkNumber);
 }
 
-
 //Additional functions
-int digit_to_int(char c)
-{
+int digit_to_int(char c){
     return ( static_cast<int>(c) - static_cast<int>('0') );
 }
+
+void sort(Check userChecks[], int numOfChecks){}
 
