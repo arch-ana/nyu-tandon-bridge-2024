@@ -38,7 +38,7 @@ int minInArray1(int arr[], int arrSize){
     }
     else{
         minInArray1(arr, arrSize-1);
-        if (arr[arrSize-1]<minInArray1(arr, arrSize-1)){
+        if (arr[arrSize-1]<){
             return arr[arrSize-1];
         }
         else{
@@ -51,7 +51,6 @@ int minInArray1(int arr[], int arrSize){
 //func2
 int minInArray2(int arr[], int low, int high){
     if (low == high){
-        //cout<<arr[low]<<endl;
         return arr[low];
     }
     else{
