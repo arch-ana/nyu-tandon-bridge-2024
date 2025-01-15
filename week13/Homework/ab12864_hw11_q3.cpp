@@ -38,7 +38,7 @@ int minInArray1(int arr[], int arrSize){
     }
     else{
         minInArray1(arr, arrSize-1);
-        if (arr[arrSize-1]<){
+        if (arr[arrSize-1]<minInArray1(arr, arrSize-1)){
             return arr[arrSize-1];
         }
         else{
