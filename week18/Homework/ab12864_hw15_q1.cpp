@@ -41,6 +41,7 @@ int main(){
     double amount;
     ifstream in_stream;
     AccountNodePtr head = new Account;
+    AccountNodePtr iter;
 
     cout<<"Enter the file name: ";
     cin>>in_file_name;
@@ -64,9 +65,9 @@ int main(){
     head -> set_amount_paid(amount);
     head -> set_link(nullptr);
     
-    cout<<"Amount: "<<head->get_amount_paid()<<endl;
-    cout<<"Name: "<<head->get_name()<<endl;
-    cout<<"Link: "<<head->get_link()<<endl;
+    // cout<<"Amount: "<<head->get_amount_paid()<<endl;
+    // cout<<"Name: "<<head->get_name()<<endl;
+    // cout<<"Link: "<<head->get_link()<<endl;
 
     //second node entry
     string name2;
@@ -104,8 +105,12 @@ int main(){
         name2 = "";
     }
 
-    
+    for (iter = head; iter != NULL; iter = iter -> get_link()){
+        cout<<"Name: "<<iter->get_name()<<endl;
+        cout<<"Amount: "<<iter->get_amount_paid()<<endl;
+    }
 
+    delete head;
     in_stream.close();
 
     return 0;
