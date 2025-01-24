@@ -32,7 +32,7 @@ public:
 
 typedef Account* AccountNodePtr;
 
-void head_insert(AccountNodePtr& the_head, string the_name, double the_amount_paid, double the_amount_owed, bool the_paid_status, Account* the_next);
+void head_insert(AccountNodePtr& the_head, string the_name, double the_amount_paid);
 
 int main(){
 
@@ -51,7 +51,7 @@ int main(){
         exit(1);
     }
 
-    //first entry
+    //first node entry
     in_stream>>amount;
     in_stream.get(character);
 
@@ -62,27 +62,32 @@ int main(){
 
     head -> set_name(name);
     head -> set_amount_paid(amount);
-    head -> set_link(NULL);
+    head -> set_link(nullptr);
     
     cout<<"Amount: "<<head->get_amount_paid()<<endl;
     cout<<"Name: "<<head->get_name()<<endl;
     cout<<"Link: "<<head->get_link()<<endl;
-        
-    // while (!in_stream.eof()){
 
-    //     in_stream>>amount;
-    //     in_stream.get(character);
-        
-    //     while(character != '\n'){
-    //         name += character;
-    //         cin.get(character);
-    //     }
+    //second node linked to the first;
+    string name2;
+    double amount2;
+    char character2;
 
-    //     cout<<"Name: "<<name<<endl;
-    //     cout<<"Amount: "<<amount<<endl;
-    // }
-    
+    in_stream>>amount2;
+    in_stream.get(character2);
 
+    while(character2 != '\n'){
+        name2 += character2;
+        in_stream.get(character2);
+    }
+
+    cout<<"Name2: "<<name2<<endl;
+    cout<<"Amount2: "<<amount2<<endl;
+
+    //attaching second record to the first node
+    head_insert(head, name2, amount2);
+    cout<<"Name 2: "<<head->get_name()<<endl;
+    cout<<"Amount 2: "<<head->get_amount_paid()<<endl;
 
     in_stream.close();
 
@@ -93,7 +98,7 @@ int main(){
 
 Account::Account(): name(""), amount_paid(0), amount_owed(0), paid_status(false), link(nullptr){}
 
-Account::Account(string the_name, double the_amount_paid):name(the_name), amount_paid(the_amount_paid){}
+Account::Account(string the_name, double the_amount_paid):name(the_name), amount_paid(the_amount_paid), amount_owed(0), paid_status(false), link(nullptr){}
 
 Account::Account(string the_name, double the_amount_paid, double the_amount_owed, bool the_paid_status, Account* the_next): name(the_name), amount_paid(the_amount_paid), amount_owed(the_amount_owed), paid_status(the_paid_status), link(the_next){}
 
@@ -137,8 +142,9 @@ void Account::set_link(Account* the_next){
     link = the_next;
 }
 
-void head_insert(AccountNodePtr& the_head, string the_name, double the_amount_paid, double the_amount_owed, bool the_paid_status, Account* the_next){
+void head_insert(AccountNodePtr& the_head, string the_name, double the_amount_paid){
     AccountNodePtr temp_ptr;
-    temp_ptr = new Account(the_name, the_amount_paid, the_amount_owed, the_paid_status, the_head);
+    temp_ptr = new Account(the_name, the_amount_paid);
+    temp_ptr->set_link(the_head);
     the_head = temp_ptr;
 }
