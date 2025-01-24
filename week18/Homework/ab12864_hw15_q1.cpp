@@ -68,26 +68,43 @@ int main(){
     cout<<"Name: "<<head->get_name()<<endl;
     cout<<"Link: "<<head->get_link()<<endl;
 
-    //second node linked to the first;
+    //second node entry
     string name2;
     double amount2;
     char character2;
 
-    in_stream>>amount2;
-    in_stream.get(character2);
+    // in_stream>>amount2;
+    // in_stream.get(character2);
 
-    while(character2 != '\n'){
-        name2 += character2;
+    // while(character2 != '\n'){
+    //     name2 += character2;
+    //     in_stream.get(character2);
+    // }
+
+    // cout<<"Name2: "<<name2<<endl;
+    // cout<<"Amount2: "<<amount2<<endl;
+
+    // //attaching second record to the first node using head_insert
+    // head_insert(head, name2, amount2);
+    // cout<<"Name 2: "<<head->get_name()<<endl;
+    // cout<<"Amount 2: "<<head->get_amount_paid()<<endl;
+
+    //in_stream>>amount2;
+
+    while (in_stream>>amount2){
         in_stream.get(character2);
+        while (character2 != '\n'){
+            name2 += character2;
+            in_stream.get(character2);
+        }
+        head_insert(head, name2, amount2);
+        // cout<<"Name: "<<head->get_name()<<endl;
+        // cout<<"Amount: "<<head->get_amount_paid()<<endl;
+        // cout<<"Link: "<<head->get_link()<<endl;
+        name2 = "";
     }
 
-    cout<<"Name2: "<<name2<<endl;
-    cout<<"Amount2: "<<amount2<<endl;
-
-    //attaching second record to the first node
-    head_insert(head, name2, amount2);
-    cout<<"Name 2: "<<head->get_name()<<endl;
-    cout<<"Amount 2: "<<head->get_amount_paid()<<endl;
+    
 
     in_stream.close();
 
