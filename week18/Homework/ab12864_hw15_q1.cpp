@@ -38,10 +38,9 @@ int main(){
 
     string in_file_name, name;
     char character;
-    double amount;
+    double amount, total, share, count;
     ifstream in_stream;
     AccountNodePtr head = new Account;
-    AccountNodePtr iter;
 
     cout<<"Enter the file name: ";
     cin>>in_file_name;
@@ -64,51 +63,42 @@ int main(){
     head -> set_name(name);
     head -> set_amount_paid(amount);
     head -> set_link(nullptr);
-    
-    // cout<<"Amount: "<<head->get_amount_paid()<<endl;
-    // cout<<"Name: "<<head->get_name()<<endl;
-    // cout<<"Link: "<<head->get_link()<<endl;
 
-    //second node entry
     string name2;
     double amount2;
     char character2;
 
-    // in_stream>>amount2;
-    // in_stream.get(character2);
-
-    // while(character2 != '\n'){
-    //     name2 += character2;
-    //     in_stream.get(character2);
-    // }
-
-    // cout<<"Name2: "<<name2<<endl;
-    // cout<<"Amount2: "<<amount2<<endl;
-
-    // //attaching second record to the first node using head_insert
-    // head_insert(head, name2, amount2);
-    // cout<<"Name 2: "<<head->get_name()<<endl;
-    // cout<<"Amount 2: "<<head->get_amount_paid()<<endl;
-
-    //in_stream>>amount2;
-
     while (in_stream>>amount2){
         in_stream.get(character2);
-        while (character2 != '\n'){
+        while (character2 != '\n' && !in_stream.eof()){
             name2 += character2;
             in_stream.get(character2);
         }
         head_insert(head, name2, amount2);
-        // cout<<"Name: "<<head->get_name()<<endl;
-        // cout<<"Amount: "<<head->get_amount_paid()<<endl;
-        // cout<<"Link: "<<head->get_link()<<endl;
         name2 = "";
     }
 
-    for (iter = head; iter != NULL; iter = iter -> get_link()){
-        cout<<"Name: "<<iter->get_name()<<endl;
-        cout<<"Amount: "<<iter->get_amount_paid()<<endl;
+    for (AccountNodePtr iter = head; iter != nullptr; iter = iter -> get_link()){
+        // cout<<"Name: "<<iter->get_name()<<endl;
+        // cout<<"Amount: "<<iter->get_amount_paid()<<endl;
+        total += iter -> get_amount_paid();
+        count++;
     }
+
+    share = total/count;
+    //cout<<"Share is: "<<share<<endl;
+
+    for (AccountNodePtr iter = head; iter != nullptr; iter = iter -> get_link()){
+        iter -> set_amount_owed(iter->get_amount_paid() - share);
+        if (iter -> get_amount_paid() == share){
+            iter -> set_paid_status(true);
+        }else{
+            iter -> set_paid_status(false);
+        }
+        //cout<<"Name: "<<iter->get_name()<<" & paid status: "<<iter->get_paid_status()<<endl;
+    }
+
+    
 
     delete head;
     in_stream.close();
