@@ -4,6 +4,7 @@
 #include <string>
 #include <cstdlib>
 #include <iomanip>
+#include <cmath>
 
 using namespace std;
 
@@ -29,24 +30,35 @@ public:
     void set_paid_status(bool the_paid_status);
     Account* get_link() const;
     void set_link(Account* next);
+
+    friend class LinkedList;
 };
 
 typedef Account* AccountNodePtr;
 
-void head_insert(AccountNodePtr& the_head, string the_name, double the_amount_paid);
-AccountNodePtr find_next_debtor(AccountNodePtr curr_node);
-AccountNodePtr find_next_creditor(AccountNodePtr curr_node);
-void settle_transaction(AccountNodePtr debtor, AccountNodePtr creditor);
-//void find_and_settle_transactions(AccountNodePtr head);
-void find_and_settle_all_transactions(AccountNodePtr head);
+class LinkedList{
+    private:
+        Account* head;
+
+    public:
+        LinkedList();
+        ~LinkedList();
+        void add_account(string the_name, double the_amount_paid);
+        double total_cost() const;
+        double total_accounts() const; //using double to address any future conversion errors
+        void calculate_amount_owed(double share);
+        Account* find_next_debtor(AccountNodePtr curr_node);
+        Account* find_next_creditor(AccountNodePtr curr_node);
+        void settle_transaction(AccountNodePtr debtor, AccountNodePtr creditor);
+        void find_and_settle_all_transactions();
+};
 
 int main(){
 
     string in_file_name, name;
     char character;
-    double amount, total, share, count;
+    double amount;
     ifstream in_stream;
-    AccountNodePtr head = new Account;
 
     cout<<"Enter the file name: ";
     cin>>in_file_name;
@@ -58,88 +70,27 @@ int main(){
         exit(1);
     }
 
-    //first node entry
-    in_stream>>amount;
-    in_stream.get(character);
+    LinkedList accounts;
 
-    while(character != '\n'){
-        name += character;
+    while (in_stream>>amount){
         in_stream.get(character);
-    }
-
-    head -> set_name(name);
-    head -> set_amount_paid(amount);
-    head -> set_link(nullptr);
-
-    string name2;
-    double amount2;
-    char character2;
-
-    while (in_stream>>amount2){
-        in_stream.get(character2);
-        while (character2 != '\n' && !in_stream.eof()){
-            name2 += character2;
-            in_stream.get(character2);
+        while (character != '\n' && !in_stream.eof()){
+            name += character;
+            in_stream.get(character);
         }
-        head_insert(head, name2, amount2);
-        name2 = "";
+        accounts.add_account(name, amount);
+        name = "";
     }
 
-    for (AccountNodePtr iter = head; iter != nullptr; iter = iter -> get_link()){
-        // cout<<"Name: "<<iter->get_name()<<endl;
-        // cout<<"Amount: "<<iter->get_amount_paid()<<endl;
-        total += iter -> get_amount_paid();
-        count++;
-    }
+    double total = accounts.total_cost();
+    double count = accounts.total_accounts();
+    double share = total/count;
 
-    share = total/count;
-    //cout<<"Share is: "<<share<<endl;
+    accounts.calculate_amount_owed(share);
+    accounts.find_and_settle_all_transactions();
 
-    for (AccountNodePtr iter = head; iter != nullptr; iter = iter -> get_link()){
-        iter -> set_amount_owed(iter->get_amount_paid() - share);
-        if (iter -> get_amount_paid() == share){
-            iter -> set_paid_status(true);
-        }else{
-            iter -> set_paid_status(false);
-        }
-        //cout<<"Name: "<<iter->get_name()<<" & paid status: "<<iter->get_paid_status()<<endl;
-    }
+    cout<<"In the end, you should have all spent: "<<share<<endl;
 
-    // AccountNodePtr debtor = find_next_debtor(head);
-    // cout<<"Debter is: "<<debtor->get_name()<<" and is owed "<<debtor->get_amount_owed()<<endl;
-    // AccountNodePtr creditor = find_next_creditor(head);
-    // cout<<"Creditor is: "<<creditor->get_name()<<" and is owed "<<creditor->get_amount_owed()<<endl;
-    // settle_transaction(debtor, creditor);
-    // cout<<"Debter "<<debtor->get_name()<<" is now owed "<<debtor->get_amount_owed()<<endl;
-    // cout<<"Creditor "<<creditor->get_name()<<" is now owed "<<creditor->get_amount_owed()<<endl;
-
-    // AccountNodePtr debtor1 = find_next_debtor(debtor);
-    // cout<<"Debter is: "<<debtor1->get_name()<<" and is owed "<<debtor1->get_amount_owed()<<endl;
-    // AccountNodePtr creditor1 = find_next_creditor(creditor);
-    // cout<<"Creditor is: "<<creditor1->get_name()<<" and is owed "<<creditor1->get_amount_owed()<<endl;
-    // settle_transaction(debtor1, creditor1);
-    // cout<<"Debter "<<debtor1->get_name()<<" is now owed "<<debtor1->get_amount_owed()<<endl;
-    // cout<<"Creditor "<<creditor1->get_name()<<" is now owed "<<creditor1->get_amount_owed()<<endl;
-
-    // AccountNodePtr debtor2 = find_next_debtor(debtor1);
-    // cout<<"Debter is: "<<debtor2->get_name()<<" and is owed "<<debtor2->get_amount_owed()<<endl;
-    // AccountNodePtr creditor2 = find_next_creditor(creditor1);
-    // cout<<"Creditor is: "<<creditor2->get_name()<<" and is owed "<<creditor2->get_amount_owed()<<endl;
-    // settle_transaction(debtor2, creditor2);
-    // cout<<"Debter "<<debtor2->get_name()<<" is now owed "<<debtor2->get_amount_owed()<<endl;
-    // cout<<"Creditor "<<creditor2->get_name()<<" is now owed "<<creditor2->get_amount_owed()<<endl;
-
-    // AccountNodePtr debtor3 = find_next_debtor(debtor2);
-    // cout<<"Debter is: "<<debtor3->get_name()<<" and is owed "<<debtor3->get_amount_owed()<<endl;
-    // AccountNodePtr creditor3 = find_next_creditor(creditor2);
-    // cout<<"Creditor is: "<<creditor3->get_name()<<" and is owed "<<creditor3->get_amount_owed()<<endl;
-    // settle_transaction(debtor3, creditor3);
-    // cout<<"Debter "<<debtor3->get_name()<<" is now owed "<<debtor3->get_amount_owed()<<endl;
-    // cout<<"Creditor "<<creditor3->get_name()<<" is now owed "<<creditor3->get_amount_owed()<<endl;
-
-    find_and_settle_all_transactions(head);
-
-    delete head;
     in_stream.close();
 
     return 0;
@@ -193,62 +144,89 @@ void Account::set_link(Account* the_next){
     link = the_next;
 }
 
-void head_insert(AccountNodePtr& the_head, string the_name, double the_amount_paid){
-    AccountNodePtr temp_ptr;
-    temp_ptr = new Account(the_name, the_amount_paid);
-    temp_ptr->set_link(the_head);
-    the_head = temp_ptr;
+//Linked list class implementation
+LinkedList::LinkedList():head(nullptr){}
+
+LinkedList::~LinkedList(){
+    while (head != nullptr){
+        Account* temp = head;
+        head = head->get_link();
+        delete temp;
+    }
 }
 
-AccountNodePtr find_next_debtor(AccountNodePtr curr_node){
+void LinkedList::add_account(string the_name, double the_amount_paid){
+    AccountNodePtr new_account = new Account (the_name, the_amount_paid);
+    new_account->set_link(head);
+    head = new_account;
+}
+
+double LinkedList::total_cost() const{
+
+    double total = 0.0;
+
+    for (AccountNodePtr iter = head; iter != nullptr; iter = iter -> get_link()){
+        total += iter->get_amount_paid();
+    }
+    return total;
+}
+
+double LinkedList::total_accounts() const{
+
+    double num_accounts = 0.0;
+
+    for (AccountNodePtr iter = head; iter != nullptr; iter = iter -> get_link()){
+        num_accounts ++;
+    }
+
+    return num_accounts;
+
+}
+
+void LinkedList::calculate_amount_owed(double share){
+    for (AccountNodePtr iter = head; iter != nullptr; iter = iter ->get_link()){
+        iter -> set_amount_owed(iter->get_amount_paid() - share);
+        iter -> set_paid_status(iter -> get_amount_paid() == share);
+    }
+}
+
+AccountNodePtr LinkedList::find_next_debtor(AccountNodePtr curr_node){
     AccountNodePtr iter = curr_node;
-    //cout<<"find_next_debtor: "<<iter->get_name()<<" "<<iter->get_amount_owed()<<endl;
     while ((iter != nullptr) && iter->get_amount_owed()>=0){
         iter = iter -> get_link();
-        //cout<<"find_next_debtor"<<iter->get_name()<<" "<<iter->get_amount_owed()<<endl;
     }
     return iter; //always check if this returns a nullptr;
 }
 
-AccountNodePtr find_next_creditor(AccountNodePtr curr_node){
+AccountNodePtr LinkedList::find_next_creditor(AccountNodePtr curr_node){
     AccountNodePtr iter = curr_node;
-    //cout<<"find_next_creditor"<<iter->get_name()<<endl;
     while ((iter != nullptr) && iter->get_amount_owed()<=0){
         iter = iter -> get_link();
-        //cout<<"find_next_creditor"<<iter->get_name()<<endl;
     }
     return iter; //always check if this returns a nullptr;
 }
 
-void settle_transaction(AccountNodePtr debtor, AccountNodePtr creditor){
-    // cout<<"settle transaction: "<<"Debtor name "<<debtor->get_name()<<" balance "<<debtor->get_amount_owed()<<endl;
-    // cout<<"settle transaction: "<<"Creditor name "<<creditor->get_name()<<" balance "<<creditor->get_amount_owed()<<endl;
+void LinkedList::settle_transaction(AccountNodePtr debtor, AccountNodePtr creditor){
+    
     if (debtor != nullptr && creditor != nullptr){
         double amount_settled = min(abs(debtor ->get_amount_owed()), abs(creditor-> get_amount_owed()));
-        // cout<<"Settle transaction: amount "<<amount_settled<<endl;
-        // cout<<"Settle transaction: debtor: "<<debtor->get_amount_owed()<<endl;
         double new_amount_debtor = debtor->get_amount_owed()+amount_settled;
         if (abs(new_amount_debtor) < 1e-9){
             new_amount_debtor = 0;
         }
-        //cout<<"Settle transaction: amount settled + balance: "<<new_amount<<endl;
         debtor->set_amount_owed(new_amount_debtor);
         double new_amount_creditor = creditor->get_amount_owed()-amount_settled;
         if (abs(new_amount_creditor) < 1e-9){
             new_amount_creditor = 0;
         }
         creditor->set_amount_owed(new_amount_creditor);
-        //cout<<"Settle transaction, debtor balance increased to: "<<debtor->get_amount_owed()<<endl;
-        //cout<<"Settle transaction, creditor balance increased to: "<<creditor->get_amount_owed()<<endl;
         cout<<debtor->get_name()<<" pays "<<creditor->get_name()<<" $ "<<amount_settled<<endl;
     }    
 }
 
-void find_and_settle_all_transactions(AccountNodePtr head){
+void LinkedList::find_and_settle_all_transactions(){
     AccountNodePtr debtor = find_next_debtor(head);
     AccountNodePtr creditor = find_next_creditor(head);
-    cout<<debtor->get_name()<<endl;
-    cout<<creditor->get_name()<<endl;
 
     for (AccountNodePtr iter = head; iter != nullptr; iter = iter -> get_link()){
         if (iter->get_paid_status() == true){
@@ -264,9 +242,5 @@ void find_and_settle_all_transactions(AccountNodePtr head){
         if (creditor->get_amount_owed() == 0){
             creditor = find_next_creditor(creditor);
         }
-        //cout<<"New debtor"<<debtor->get_name()<<endl;
-        //cout<<"New creditor"<<creditor->get_name()<<endl;
-    }
-
-    cout<<"In the end, you should have all spent: "<<endl;
+    }   
 }
