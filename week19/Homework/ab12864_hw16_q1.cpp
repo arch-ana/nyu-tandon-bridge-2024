@@ -48,72 +48,131 @@ bool symbolBalance(stack<char>& theStack, istream& theStream){
     cout<<"Enters function\n";
 
     char currChar;
-    string currString;
+    string currString, beginString;
     bool hasBegun = false, hasEnded = false;
 
-    while (theStream>>currString){
-        if (currString == "begin"){
-            cout<<"Has begun\n";
-            hasBegun = true;
-        }
-        else if (currString == "end"){
-            hasEnded = true;
-            cout<<"Has ended\n";
-            // cout<<"Has ended is true\n";
-            // if (hasBegun){
-            //     cout<<"Both has ended and has begun are true\n";
-            //     return theStack.empty();
-            // }
-            // else{
-            //     cout<<"The file does not have a begin keyword";
-            //     return false;
-            // }
-            // return (hasBegun && theStack.empty());
-        }
-        else{
-            if (hasBegun && !hasEnded){
-                // cout<<"File never began\n";
-                // return false;
-                for (int i = 0; i < currString.size(); i++){
-                currChar = currString[i];
-                    if (currChar == LEFT_BRACKET || currChar == LEFT_CURLY_BRACE || currChar == LEFT_SQUARE_BRACE){
-                        theStack.push(currChar);
-                        cout<<"It is a left bracket\n";
-                    }
-                    else if (currChar == RIGHT_BRACKET){
-                        if (!theStack.empty() && theStack.top() == LEFT_BRACKET){
-                            theStack.pop();
-                            cout<<"Popped left bracket\n";
-                        }
-                        else{
-                            cout<<"No left bracket\n";
-                            return false;
-                        }
-                    }
-                    else if (currChar == RIGHT_CURLY_BRACE){
-                        if (!theStack.empty() && theStack.top() == LEFT_CURLY_BRACE){
-                            theStack.pop();
-                            cout<<"Popped left curly bracket\n";
-                        }
-                        else{
-                            cout<<"No left curly bracket\n";
-                            return false;
-                        }
-                    }
-                    else if (currChar == RIGHT_SQUARE_BRACE){
-                        if (!theStack.empty() && theStack.top() == LEFT_SQUARE_BRACE){
-                            theStack.pop();
-                            cout<<"Popped left square bracket\n";
-                        }
-                        else{
-                            cout<<"No left square bracket\n";
-                            return false;
+    while (theStream>>currChar){
+        if (currChar == 'b'){
+            theStream >> currChar;
+            if (currChar == 'e'){
+                theStream >> currChar;
+                if (currChar == 'g'){
+                    theStream >> currChar;
+                    if (currChar == 'i'){
+                        theStream >> currChar;
+                        if (currChar == 'n'){
+                            cout<<"Has begun\n";
+                            hasBegun = true;
+                            //break;
                         }
                     }
                 }
             }
-        } 
+        }
+        if (currChar == 'e'){
+            theStream>>currChar;
+            if (currChar == 'n'){
+                theStream>>currChar;
+                if (currChar == 'd'){
+                    cout<<"Has ended\n";
+                    hasEnded = true;
+                }
+            }
+        }
+        if (hasBegun && !hasEnded){
+            if (currChar == LEFT_BRACKET || currChar == LEFT_CURLY_BRACE || currChar == LEFT_SQUARE_BRACE){
+                theStack.push(currChar);
+                cout<<"It is a left bracket\n";
+            }
+            else if (currChar == RIGHT_BRACKET){
+                if (!theStack.empty() && theStack.top() == LEFT_BRACKET){
+                    theStack.pop();
+                    cout<<"Popped left bracket\n";
+                }
+                else{
+                    cout<<"No left bracket\n";
+                    return false;
+                }
+            }
+            else if (currChar == RIGHT_CURLY_BRACE){
+                if (!theStack.empty() && theStack.top() == LEFT_CURLY_BRACE){
+                    theStack.pop();
+                    cout<<"Popped left curly bracket\n";
+                }
+                else{
+                    cout<<"No left curly bracket\n";
+                    return false;
+                }
+            }
+            else if (currChar == RIGHT_SQUARE_BRACE){
+                if (!theStack.empty() && theStack.top() == LEFT_SQUARE_BRACE){
+                    theStack.pop();
+                    cout<<"Popped left square bracket\n";
+                }
+                else{
+                    cout<<"No left square bracket\n";
+                    return false;
+                }
+            }
+        }
     }
+
+    // if (!hasBegun){
+    //     cout<<"File never began\n";
+    //     return false;
+    // }
+
+    // while (theStream>>currString){
+    //     if (currString == "begin"){
+    //         cout<<"Has begun\n";
+    //         hasBegun = true;
+    //     }
+    //     else if (currString == "end"){
+    //         hasEnded = true;
+    //         cout<<"Has ended\n";
+    //     }
+    //     else{
+    //         if (hasBegun && !hasEnded){
+    //             for (int i = 0; i < currString.size(); i++){
+    //             currChar = currString[i];
+    //                 if (currChar == LEFT_BRACKET || currChar == LEFT_CURLY_BRACE || currChar == LEFT_SQUARE_BRACE){
+    //                     theStack.push(currChar);
+    //                     cout<<"It is a left bracket\n";
+    //                 }
+    //                 else if (currChar == RIGHT_BRACKET){
+    //                     if (!theStack.empty() && theStack.top() == LEFT_BRACKET){
+    //                         theStack.pop();
+    //                         cout<<"Popped left bracket\n";
+    //                     }
+    //                     else{
+    //                         cout<<"No left bracket\n";
+    //                         return false;
+    //                     }
+    //                 }
+    //                 else if (currChar == RIGHT_CURLY_BRACE){
+    //                     if (!theStack.empty() && theStack.top() == LEFT_CURLY_BRACE){
+    //                         theStack.pop();
+    //                         cout<<"Popped left curly bracket\n";
+    //                     }
+    //                     else{
+    //                         cout<<"No left curly bracket\n";
+    //                         return false;
+    //                     }
+    //                 }
+    //                 else if (currChar == RIGHT_SQUARE_BRACE){
+    //                     if (!theStack.empty() && theStack.top() == LEFT_SQUARE_BRACE){
+    //                         theStack.pop();
+    //                         cout<<"Popped left square bracket\n";
+    //                     }
+    //                     else{
+    //                         cout<<"No left square bracket\n";
+    //                         return false;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     } 
+    // }
     if (!hasBegun && hasEnded){
         cout<<"File ended without beginning\n";
         return false;
@@ -126,7 +185,7 @@ bool symbolBalance(stack<char>& theStack, istream& theStream){
         cout<<"File neither began nor ended\n";
         return false;
     }
-    else if (hasBegun && hasEnded){
+    else{
         cout<<"File began and ended correctly\n";
         return (theStack.empty());
     }
