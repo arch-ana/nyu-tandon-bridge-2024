@@ -16,6 +16,15 @@ class Queue{
         //constructor
         Queue(): front(0), back(-1) {}
 
+        //getters
+        int get_front(){
+            return front;
+        }
+
+        int get_back(){
+            return back;
+        }
+
         //add element to queue
         void enqueue(const T& theElement){
             queueVector.push_back(theElement);
@@ -38,22 +47,19 @@ class Queue{
             }
         }
         
-        //check the top element
-        T top(){
-            if (front>back){
-                throw runtime_error("Queue is empty");
+        //check the front element - using a bool + pass by reference to check 
+        //for front element only if queue is not empty
+        bool peek(T& theTopElement){
+            if (isEmpty()){
+                return false;
             }
-            else{
-                return queueVector[front];
-            }
+            theTopElement = queueVector[front];  
+            return true; 
         }
 
         //check if the queue is empty
         bool isEmpty(){
-            if (front > back){
-                return true;
-            }
-            return false;
+            return (front > back);
         }
 
         //check the logical size of the queue
@@ -69,46 +75,65 @@ class Queue{
         }
 };
 
-// int main() {
-//     Queue<int> q;
+int main() {
+    Queue<int> q;
+    int frontElement;
 
-//     cout << "Enqueuing 1, 2, 3, 4, 5..." << endl;
-//     q.enqueue(1);
-//     q.enqueue(2);
-//     q.enqueue(3);
-//     q.enqueue(4);
-//     q.enqueue(5);
+    cout << "Enqueuing 1, 2, 3, 4, 5" << endl;
+    q.enqueue(1);
+    q.enqueue(2);
+    q.enqueue(3);
+    q.enqueue(4);
+    q.enqueue(5);
 
-//     cout << "Front element: " << q.top() << endl;
-//     cout << "Queue size: " << q.size() << endl;
+    if (q.peek(frontElement)){
+        cout<<"Front element: "<<frontElement<<endl;
+    }
+    else{
+        cout<<"Queue is empty"<<endl;
+    }
 
-//     cout << "Dequeuing 2 elements..." << endl;
-//     q.dequeue();
-//     q.dequeue();
+    cout << "Queue size: " << q.size() << endl;
 
-//     cout << "Front element after dequeuing: " << q.top() << endl;
-//     cout << "Queue size after dequeuing: " << q.size() << endl;
+    cout << "Dequeuing 2 elements..." << endl;
+    q.dequeue();
+    q.dequeue();
 
-//     cout << "Dequeuing remaining elements..." << endl;
-//     q.dequeue();
-//     q.dequeue();
-//     q.dequeue();
+    if (q.peek(frontElement)){
+        cout<<"Front element after dequeueing: "<<frontElement<<endl;
+    }
+    else{
+        cout<<"Queue is empty"<<endl;
+    }
 
-//     cout << "Is queue empty? " << (q.isEmpty() ? "Yes" : "No") << endl;
+    cout << "Queue size after dequeuing: " << q.size() << endl;
 
-//     cout << "Trying to peek on empty queue..." << endl;
-//     try {
-//         q.top();
-//     } catch (const runtime_error& e) {
-//         cout << "Exception caught: " << e.what() << endl;
-//     }
+    cout << "Dequeuing remaining elements..." << endl;
+    q.dequeue();
+    q.dequeue();
+    q.dequeue();
 
-//     cout << "Enqueuing after clearing queue..." << endl;
-//     q.enqueue(10);
-//     q.enqueue(20);
+    cout << "Is queue empty? " << (q.isEmpty() ? "Yes" : "No") << endl;
 
-//     cout << "Front element: " << q.top() << endl;
-//     cout << "Queue size: " << q.size() << endl;
+    cout << "Trying to peek on empty queue..." << endl;
+    if (q.peek(frontElement)){
+        cout<<"Front element: "<<frontElement<<endl;
+    }
+    else{
+        cout<<"Queue is empty"<<endl;
+    }
 
-//     return 0;
-// }
+    cout << "Enqueuing 10 and 20" << endl;
+    q.enqueue(10);
+    q.enqueue(20);
+
+    if (q.peek(frontElement)){
+        cout<<"Front element: "<<frontElement<<endl;
+    }
+    else{
+        cout<<"Queue is empty"<<endl;
+    }
+    cout << "Queue size: " << q.size() << endl;
+
+    return 0;
+}
